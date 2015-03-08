@@ -14,7 +14,17 @@
 // Home page will display the login form.
 Route::get('/', function()
 {
-    return View::make('home');
+    if(Auth::check()){
+        if(Auth::user()->role_id != 'admin'){
+            return View::make('profile/index');
+        }
+        else{
+            return View::make('admin/index');
+        }
+    }
+    else{
+        return View::make('home');
+    }
 });
 
 
@@ -22,3 +32,7 @@ Route::get('/', function()
 Route::get('logout','SessionsController@destroy');
 // Resource route for SessionsController
 Route::resource('sessions','SessionsController');
+
+// Resource routes below
+Route::resource('admin','AdminController');
+Route::resource('profile','ProfileController');
